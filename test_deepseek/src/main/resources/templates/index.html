@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: url('https://source.unsplash.com/1600x900/?AI,robot') no-repeat center center/cover;
+            background: url('/spring ai.jpg') no-repeat center center/cover;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -49,64 +49,40 @@
         button:hover {
             background-color: #0056b3;
         }
-        .response-wrapper {
-            margin-top: 20px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-        .tick-mark {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-            background: green;
-            color: white;
-            border-radius: 50%;
-            font-size: 16px;
-            font-weight: bold;
-        }
         .response-container {
-            display: none;
-            margin-top: 10px;
+            margin-top: 20px;
             padding: 10px;
-            background: #e9ecef;
+            background: rgba(67, 68, 64, 0.38);
             border-radius: 5px;
             text-align: left;
             max-height: 300px;
             overflow-y: auto;
             word-wrap: break-word;
             white-space: pre-wrap;
+            display: none;
         }
     </style>
     <script>
-        async function sendPrompt() {
+        function sendPrompt() {
             const question = document.getElementById("question").value;
             if (!question) {
                 alert("Please enter a question!");
                 return;
             }
 
-            const responseWrapper = document.getElementById("response-wrapper");
             const responseContainer = document.getElementById("response-container");
-            responseWrapper.style.display = "none";
-            responseContainer.style.display = "none";
-            responseContainer.innerText = "";
+            responseContainer.innerText = "";  // Clear previous responses
+            responseContainer.style.display = "block"; // Make visible
 
-            const response = await fetch("/api/v1/test-model/prompt-as-stream?question=" + encodeURIComponent(question));
-            const result = await response.text();
+            const eventSource = new EventSource(`/api/v1/test-model/prompt-as-stream?question=${encodeURIComponent(question)}`);
 
-            document.getElementById("response-message").innerText = "click here to view response";
-            responseContainer.innerText = result;
-            responseWrapper.style.display = "flex";
-        }
+            eventSource.onmessage = function(event) {
+                responseContainer.innerText += event.data; // Append streamed response chunk
+            };
 
-        function toggleResponse() {
-            const responseContainer = document.getElementById("response-container");
-            responseContainer.style.display = responseContainer.style.display === "none" ? "block" : "none";
+            eventSource.onerror = function() {
+                eventSource.close();
+            };
         }
     </script>
 </head>
@@ -116,10 +92,6 @@
     <div class="input-container">
         <input type="text" id="question" placeholder="Ask something...">
         <button onclick="sendPrompt()">Send</button>
-    </div>
-    <div class="response-wrapper" id="response-wrapper" onclick="toggleResponse()">
-        <span id="response-message"></span>
-        <div id="tick-mark" class="tick-mark">✔</div>
     </div>
     <div class="response-container" id="response-container"></div>
 </div>
