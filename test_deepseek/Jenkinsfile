@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+environment {
+        SONARQUBE_URL = 'http://localhost:9000'
+        SONARQUBE_TOKEN = credentials('sonar-token')
+    }
+
     stages {
         stage('Build') {
             agent {
@@ -43,6 +48,41 @@ pipeline {
             }
 
 
+        // ✅ SonarQube Analysis Stage
+        stage('SonarQube Analysis') {
+            agent {
+                docker {
+                    image 'maven:3.9-eclipse-temurin-21'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                cd test_deepseek
+                mvn sonar:sonar \
+                  -Dsonar.projectKey=test_deepseek \
+                  -Dsonar.host.url=${SONARQUBE_URL} \
+                  -Dsonar.login=${SONARQUBE_TOKEN}
+                '''
+            }
+        }
 
+
+//         stage('Deploy') {
+//             steps {
+//                 sh '''
+//                 # Push changes to GitHub (Render will auto-deploy from GitHub)
+//                 git add .
+//                 git commit -m "Automated commit from Jenkins"
+//                 git push origin main
+//                 '''
+//
+//                 # Optionally trigger Render manually using a webhook
+//                 script {
+//                     def renderWebhook = "https://api.render.com/deploy/webhooks/<your-webhook-id>"
+//                     sh "curl -X POST $renderWebhook"
+//                 }
+//             }
+//         }
     }
 }
