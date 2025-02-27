@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95817c1a-6bc3-46d7-959d-76053be77a60" name="Changes" comment="test stage added in Jenkinsfile">
-      <change afterPath="$PROJECT_DIR$/test_deepseek/src/test/java/com/spring/test_deepseek/controller/ChatControllerTest.java" afterDir="false" />
+    <list default="true" id="95817c1a-6bc3-46d7-959d-76053be77a60" name="Changes" comment="test stage added in Jenkinsfile + wrong test cases added to check jenkins pipeline">
+      <change beforePath="$PROJECT_DIR$/test_deepseek/src/test/java/com/spring/test_deepseek/controller/ChatControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test_deepseek/src/test/java/com/spring/test_deepseek/controller/ChatControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageOptionsProvider">
+    <option name="myAddOrReplace" value="0" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -162,7 +165,7 @@
       <workItem from="1740615695431" duration="166000" />
       <workItem from="1740615884471" duration="62000" />
       <workItem from="1740615956941" duration="63000" />
-      <workItem from="1740616029612" duration="2357000" />
+      <workItem from="1740616029612" duration="2661000" />
     </task>
     <task id="LOCAL-00001" summary="dependency modified and version changes related changes">
       <option name="closed" value="true" />
@@ -236,7 +239,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740617937877</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="test stage added in Jenkinsfile + wrong test cases added to check jenkins pipeline">
+      <option name="closed" value="true" />
+      <created>1740618459239</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1740618459239</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -251,10 +262,14 @@
     <MESSAGE value="jenkins file added for build purpose" />
     <MESSAGE value="jenkins file added for build purpose pom.xml path fixed" />
     <MESSAGE value="test stage added in Jenkinsfile" />
-    <option name="LAST_COMMIT_MESSAGE" value="test stage added in Jenkinsfile" />
+    <MESSAGE value="test stage added in Jenkinsfile + wrong test cases added to check jenkins pipeline" />
+    <option name="LAST_COMMIT_MESSAGE" value="test stage added in Jenkinsfile + wrong test cases added to check jenkins pipeline" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/spring_boot_with_deep_seek$HomeControllerTest.ic" NAME="HomeControllerTest Coverage Results" MODIFIED="1740617697960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>com.spring.test_deepseek.controller.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/spring_boot_with_deep_seek$ChatControllerTest.ic" NAME="ChatControllerTest Coverage Results" MODIFIED="1740618690077" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>com.spring.test_deepseek.controller.*</FILTER>
     </SUITE>
   </component>
