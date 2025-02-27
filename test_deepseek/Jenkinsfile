@@ -1,19 +1,13 @@
 pipeline {
     agent any
 
-environment {
+    environment {
         SONARQUBE_URL = 'http://localhost:9000'
         SONARQUBE_TOKEN = credentials('sonar-token')
     }
 
     stages {
         stage('Build') {
-            agent {
-                docker {
-                    image 'maven:3.9-eclipse-temurin-21'
-                    reuseNode true
-                }
-            }
             steps {
                 sh '''
                 ls -la
@@ -27,35 +21,21 @@ environment {
             }
         }
 
-            stage('Test') {
-                agent {
-                    docker {
-                        image 'maven:3.9-eclipse-temurin-21'
-                        reuseNode true
-                    }
-                }
-                steps {
-                    sh '''
-                    cd test_deepseek
-                    mvn test
-                    '''
-                }
-                post {
-                    always {
-                        junit 'test_deepseek/target/surefire-reports/*.xml'
-                    }
+        stage('Test') {
+            steps {
+                sh '''
+                cd test_deepseek
+                mvn test
+                '''
+            }
+            post {
+                always {
+                    junit 'test_deepseek/target/surefire-reports/*.xml'
                 }
             }
+        }
 
-
-        // ✅ SonarQube Analysis Stage
         stage('SonarQube Analysis') {
-            agent {
-                docker {
-                    image 'maven:3.9-eclipse-temurin-21'
-                    reuseNode true
-                }
-            }
             steps {
                 sh '''
                 cd test_deepseek
@@ -66,23 +46,5 @@ environment {
                 '''
             }
         }
-
-
-//         stage('Deploy') {
-//             steps {
-//                 sh '''
-//                 # Push changes to GitHub (Render will auto-deploy from GitHub)
-//                 git add .
-//                 git commit -m "Automated commit from Jenkins"
-//                 git push origin main
-//                 '''
-//
-//                 # Optionally trigger Render manually using a webhook
-//                 script {
-//                     def renderWebhook = "https://api.render.com/deploy/webhooks/<your-webhook-id>"
-//                     sh "curl -X POST $renderWebhook"
-//                 }
-//             }
-//         }
     }
 }
