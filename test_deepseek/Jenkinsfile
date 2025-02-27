@@ -23,18 +23,25 @@ pipeline {
         }
 
             stage('Test') {
-        steps {
-          sh '''
-          cd test_deepseek
-          mvn test
-          '''
-        }
-         post {
-          always {
-              junit 'test_deepseek/target/surefire-reports/*.xml'
+                agent {
+                    docker {
+                        image 'maven:3.9-eclipse-temurin-21'
+                        reuseNode true
+                    }
                 }
-           }
-        }
+                steps {
+                    sh '''
+                    cd test_deepseek
+                    mvn test
+                    '''
+                }
+                post {
+                    always {
+                        junit 'test_deepseek/target/surefire-reports/*.xml'
+                    }
+                }
+            }
+
 
 
     }
