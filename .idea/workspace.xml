@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95817c1a-6bc3-46d7-959d-76053be77a60" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/test_deepseek/Jenkinsfile" afterDir="false" />
+    <list default="true" id="95817c1a-6bc3-46d7-959d-76053be77a60" name="Changes" comment="jenkins file added for build purpose pom.xml path fixed">
+      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_deepseek/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/test_deepseek/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_deepseek/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/test_deepseek/Jenkinsfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,30 +28,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.TestDeepseekApplication.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.TestDeepseekApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.TestDeepseekApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.test_deepseek [clean,test,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.test_deepseek [clean,test,package...].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.test_deepseek [package].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;Spring Boot.TestDeepseekApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Spring Boot.TestDeepseekApplication">
     <configuration name="TestDeepseekApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.spring.test_deepseek.TestDeepseekApplication" />
@@ -100,10 +104,67 @@
       <workItem from="1740387251724" duration="496000" />
       <workItem from="1740394280435" duration="564000" />
       <workItem from="1740470735519" duration="288000" />
+      <workItem from="1740471034908" duration="6334000" />
+      <workItem from="1740615128188" duration="515000" />
+      <workItem from="1740615656402" duration="30000" />
+      <workItem from="1740615695431" duration="166000" />
+      <workItem from="1740615884471" duration="62000" />
+      <workItem from="1740615956941" duration="63000" />
     </task>
+    <task id="LOCAL-00001" summary="dependency modified and version changes related changes">
+      <option name="closed" value="true" />
+      <created>1740471358992</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1740471358992</updated>
+    </task>
+    <task id="LOCAL-00002" summary="jenkins file added">
+      <option name="closed" value="true" />
+      <created>1740471370519</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1740471370519</updated>
+    </task>
+    <task id="LOCAL-00003" summary="jenkins file added for build purpose">
+      <option name="closed" value="true" />
+      <created>1740479876437</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1740479876437</updated>
+    </task>
+    <task id="LOCAL-00004" summary="jenkins file added for build purpose">
+      <option name="closed" value="true" />
+      <created>1740480314866</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1740480314866</updated>
+    </task>
+    <task id="LOCAL-00005" summary="jenkins file added for build purpose pom.xml path fixed">
+      <option name="closed" value="true" />
+      <created>1740480927477</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1740480927477</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="Jenkinsfile" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="dependency modified and version changes related changes" />
+    <MESSAGE value="jenkins file added" />
+    <MESSAGE value="jenkins file added for build purpose" />
+    <MESSAGE value="jenkins file added for build purpose pom.xml path fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="jenkins file added for build purpose pom.xml path fixed" />
   </component>
 </project>
