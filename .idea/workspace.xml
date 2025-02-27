@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95817c1a-6bc3-46d7-959d-76053be77a60" name="Changes" comment="jenkins file added for build purpose pom.xml path fixed">
-      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_deepseek/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/test_deepseek/Jenkinsfile" afterDir="false" />
-    </list>
+    <list default="true" id="95817c1a-6bc3-46d7-959d-76053be77a60" name="Changes" comment="test stage added in Jenkinsfile" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,6 +106,7 @@
       <workItem from="1740615695431" duration="166000" />
       <workItem from="1740615884471" duration="62000" />
       <workItem from="1740615956941" duration="63000" />
+      <workItem from="1740616029612" duration="315000" />
     </task>
     <task id="LOCAL-00001" summary="dependency modified and version changes related changes">
       <option name="closed" value="true" />
@@ -151,7 +148,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740480927477</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="test stage added in Jenkinsfile">
+      <option name="closed" value="true" />
+      <created>1740616167658</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1740616167658</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,6 +170,7 @@
     <MESSAGE value="jenkins file added" />
     <MESSAGE value="jenkins file added for build purpose" />
     <MESSAGE value="jenkins file added for build purpose pom.xml path fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="jenkins file added for build purpose pom.xml path fixed" />
+    <MESSAGE value="test stage added in Jenkinsfile" />
+    <option name="LAST_COMMIT_MESSAGE" value="test stage added in Jenkinsfile" />
   </component>
 </project>
