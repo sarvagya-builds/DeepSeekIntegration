@@ -22,10 +22,19 @@ pipeline {
             }
         }
 
-        stage('Test'){
-        steps{
-        echo 'Test stage'
-            }
-        }
+        stage('Test') {
+                    agent {
+                        docker {
+                            image 'maven:3.9-eclipse-temurin-21'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        sh '''
+                        cd test_deepseek
+                        mvn test
+                        '''
+                    }
+                }
     }
 }
