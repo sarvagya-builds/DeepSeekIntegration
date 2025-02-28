@@ -1,13 +1,14 @@
 pipeline {
     agent any
 
-//     environment {
-//         SONARQUBE_URL = 'http://localhost:9000'
-//         SONARQUBE_TOKEN = credentials('sonar-token')
-//     }
-
     stages {
         stage('Build') {
+            agent {
+                docker {
+                    image 'maven:3.9-eclipse-temurin-21'
+                    reuseNode true
+                }
+            }
             steps {
                 sh '''
                 ls -la
@@ -21,30 +22,25 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                sh '''
-                cd test_deepseek
-                mvn test
-                '''
-            }
-            post {
-                always {
-                    junit 'test_deepseek/target/surefire-reports/*.xml'
+            stage('Test') {
+                agent {
+                    docker {
+                        image 'maven:3.9-eclipse-temurin-21'
+                        reuseNode true
+                    }
+                }
+                steps {
+                    sh '''
+                    cd test_deepseek
+                    mvn test
+                    '''
+                }
+                post {
+                    always {
+                        junit 'test_deepseek/target/surefire-reports/*.xml'
+                    }
                 }
             }
-        }
 
-//         stage('SonarQube Analysis') {
-//             steps {
-//                 sh '''
-//                 cd test_deepseek
-//                 mvn sonar:sonar \
-//                   -Dsonar.projectKey=test_deepseek \
-//                   -Dsonar.host.url=${SONARQUBE_URL} \
-//                   -Dsonar.login=${SONARQUBE_TOKEN}
-//                 '''
-//             }
-//         }
-    }
-}
+  }
+            }
