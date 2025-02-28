@@ -53,7 +53,7 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {
                     sh '''
                     cd test_deepseek
-                    mvn sonar:sonar -Dsonar.projectKey=test_deepseek -Dsonar.host.url=http://sonar:9000
+                    mvn sonar:sonar -Dsonar.projectKey=spring-boot-deep-seek -Dsonar.host.url=http://192.168.110.186:9000
                     '''
                 }
             }
