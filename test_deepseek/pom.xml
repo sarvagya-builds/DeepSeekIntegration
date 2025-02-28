@@ -31,6 +31,8 @@
         <spring-ai.version>1.0.0-M6</spring-ai.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
+        <sonar.projectKey>test_deepseek</sonar.projectKey>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
     </properties>
     <dependencies>
         <dependency>
@@ -69,6 +71,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>5.0.0.4389</version>
             </plugin>
         </plugins>
     </build>
