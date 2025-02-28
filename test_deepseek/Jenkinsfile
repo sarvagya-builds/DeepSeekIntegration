@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none
 
     stages {
         stage('Build') {
@@ -22,25 +22,41 @@ pipeline {
             }
         }
 
-            stage('Test') {
-                agent {
-                    docker {
-                        image 'maven:3.9-eclipse-temurin-21'
-                        reuseNode true
-                    }
+        stage('Test') {
+            agent {
+                docker {
+                    image 'maven:3.9-eclipse-temurin-21'
+                    reuseNode true
                 }
-                steps {
+            }
+            steps {
+                sh '''
+                cd test_deepseek
+                mvn test
+                '''
+            }
+            post {
+                always {
+                    junit 'test_deepseek/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            agent {
+                docker {
+                    image 'maven:3.9-eclipse-temurin-21'
+                    reuseNode true
+                }
+            }
+            steps {
+                withSonarQubeEnv('SonarQube') {
                     sh '''
                     cd test_deepseek
-                    mvn test
+                    mvn sonar:sonar -Dsonar.projectKey=test_deepseek -Dsonar.host.url=http://localhost:9000
                     '''
                 }
-                post {
-                    always {
-                        junit 'test_deepseek/target/surefire-reports/*.xml'
-                    }
-                }
             }
-
-  }
-            }
+        }
+    }
+}

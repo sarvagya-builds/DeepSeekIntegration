@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95817c1a-6bc3-46d7-959d-76053be77a60" name="Changes" comment="test cases has 1 error">
-      <change beforePath="$PROJECT_DIR$/test_deepseek/src/test/java/com/spring/test_deepseek/controller/ChatControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test_deepseek/src/test/java/com/spring/test_deepseek/controller/ChatControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_deepseek/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/test_deepseek/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,7 +169,7 @@
       <workItem from="1740616029612" duration="5961000" />
       <workItem from="1740628358039" duration="1734000" />
       <workItem from="1740639753289" duration="5783000" />
-      <workItem from="1740709533227" duration="1189000" />
+      <workItem from="1740709533227" duration="4674000" />
     </task>
     <task id="LOCAL-00001" summary="dependency modified and version changes related changes">
       <option name="closed" value="true" />
@@ -330,7 +331,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740710490793</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="test cases has 1 error">
+      <option name="closed" value="true" />
+      <created>1740710741982</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1740710741982</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -357,7 +366,7 @@
     <SUITE FILE_PATH="coverage/spring_boot_with_deep_seek$HomeControllerTest.ic" NAME="HomeControllerTest Coverage Results" MODIFIED="1740617697960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>com.spring.test_deepseek.controller.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/spring_boot_with_deep_seek$ChatControllerTest.ic" NAME="ChatControllerTest Coverage Results" MODIFIED="1740618718027" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+    <SUITE FILE_PATH="coverage/spring_boot_with_deep_seek$ChatControllerTest.ic" NAME="ChatControllerTest Coverage Results" MODIFIED="1740710808463" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>com.spring.test_deepseek.controller.*</FILTER>
     </SUITE>
   </component>
