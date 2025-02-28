@@ -53,7 +53,7 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {
                     sh '''
                     cd test_deepseek
-                    mvn sonar:sonar -Dsonar.projectKey=test_deepseek -Dsonar.host.url=http://host.docker.internal:9000
+                    mvn sonar:sonar -Dsonar.projectKey=test_deepseek -Dsonar.host.url=http://sonar:9000
                     '''
                 }
             }
