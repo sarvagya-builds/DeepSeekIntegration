@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95817c1a-6bc3-46d7-959d-76053be77a60" name="Changes" comment="test cases has 1 error">
+    <list default="true" id="95817c1a-6bc3-46d7-959d-76053be77a60" name="Changes" comment="sonar analysis stage added to check jenkins pipeline">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_deepseek/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/test_deepseek/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +168,7 @@
       <workItem from="1740616029612" duration="5961000" />
       <workItem from="1740628358039" duration="1734000" />
       <workItem from="1740639753289" duration="5783000" />
-      <workItem from="1740709533227" duration="4674000" />
+      <workItem from="1740709533227" duration="6124000" />
     </task>
     <task id="LOCAL-00001" summary="dependency modified and version changes related changes">
       <option name="closed" value="true" />
@@ -339,7 +338,23 @@
       <option name="project" value="LOCAL" />
       <updated>1740710741982</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="pom dependency added to soanrqube">
+      <option name="closed" value="true" />
+      <created>1740717254008</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1740717254008</updated>
+    </task>
+    <task id="LOCAL-00023" summary="sonar analysis stage added to check jenkins pipeline">
+      <option name="closed" value="true" />
+      <created>1740717277140</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1740717277140</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,7 +375,9 @@
     <MESSAGE value="sonarqube configuration added" />
     <MESSAGE value="sonarqube configuration commented" />
     <MESSAGE value="test cases has 1 error" />
-    <option name="LAST_COMMIT_MESSAGE" value="test cases has 1 error" />
+    <MESSAGE value="pom dependency added to soanrqube" />
+    <MESSAGE value="sonar analysis stage added to check jenkins pipeline" />
+    <option name="LAST_COMMIT_MESSAGE" value="sonar analysis stage added to check jenkins pipeline" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/spring_boot_with_deep_seek$HomeControllerTest.ic" NAME="HomeControllerTest Coverage Results" MODIFIED="1740617697960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
