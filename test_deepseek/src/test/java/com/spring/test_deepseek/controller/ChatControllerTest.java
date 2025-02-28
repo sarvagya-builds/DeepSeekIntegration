@@ -28,7 +28,7 @@ class ChatControllerTest {
   @Test
   void getResponseFromDeepSeekAI() {
     String question = "What is your name?";
-    Mockito.when(chatService.getResponseFromDeepSeekAI("question")).thenReturn(question);
+    Mockito.when(chatService.getResponseFromDeepSeekAI(question)).thenReturn(question);
     chatController.getResponseFromDeepSeekAI(question);
   }
 
