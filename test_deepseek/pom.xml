@@ -34,9 +34,6 @@
         <sonar.projectKey>spring-boot-deep-seek</sonar.projectKey>
         <sonar.host.url>http://192.168.110.186:9000</sonar.host.url>
 
-        <sonar.exclusions>
-            test_deepseek/src/main/java/com/spring/test_deepseek/*service/**
-        </sonar.exclusions>
     </properties>
     <dependencies>
         <dependency>
