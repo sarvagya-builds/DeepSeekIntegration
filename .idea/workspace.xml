@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95817c1a-6bc3-46d7-959d-76053be77a60" name="Changes" comment="quality gate added and checked">
-      <change afterPath="$PROJECT_DIR$/test_deepseek/src/test/java/com/spring/test_deepseek/service/ChatServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_deepseek/src/test/java/com/spring/test_deepseek/controller/ChatControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test_deepseek/src/test/java/com/spring/test_deepseek/controller/ChatControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_deepseek/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/test_deepseek/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +26,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Kapilan1998&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Kapilan1998/spring-boot-with-deep-seek.git&quot;,
+    &quot;accountId&quot;: &quot;ca7455cc-4300-4184-a7db-fe33ebc31d50&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -41,39 +52,39 @@
     <option name="openDirectoriesWithSingleClick" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.TestDeepseekApplication.executor": "Run",
-    "JUnit.ChatControllerTest.executor": "Coverage",
-    "JUnit.ChatServiceTest.executor": "Coverage",
-    "JUnit.HomeControllerTest.executor": "Coverage",
-    "Maven.test_deepseek [clean,test,install].executor": "Run",
-    "Maven.test_deepseek [clean,test,package...].executor": "Run",
-    "Maven.test_deepseek [package].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "Spring Boot.TestDeepseekApplication.executor": "Run",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.TestDeepseekApplication.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChatControllerTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.ChatServiceTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.HomeControllerTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;Maven.test_deepseek [clean,test,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.test_deepseek [clean,test,package...].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.test_deepseek [package].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;Spring Boot.TestDeepseekApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -83,7 +94,7 @@
       <recent name="com.spring.test_deepseek.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ChatServiceTest">
+  <component name="RunManager" selected="Spring Boot.TestDeepseekApplication">
     <configuration name="TestDeepseekApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.spring.test_deepseek.TestDeepseekApplication" />
       <module name="test_deepseek" />
@@ -189,6 +200,9 @@
       <workItem from="1740628358039" duration="1734000" />
       <workItem from="1740639753289" duration="5783000" />
       <workItem from="1740709533227" duration="13136000" />
+      <workItem from="1740839490215" duration="2479000" />
+      <workItem from="1741396191083" duration="506000" />
+      <workItem from="1741396710199" duration="4811000" />
     </task>
     <task id="LOCAL-00001" summary="dependency modified and version changes related changes">
       <option name="closed" value="true" />
