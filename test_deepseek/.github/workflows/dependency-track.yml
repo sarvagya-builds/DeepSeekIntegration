@@ -1,0 +1,30 @@
+name: SBOM Analysis
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Build and generate SBOM
+        run: mvn clean package cyclonedx:makeAggregateBom
+
+      - name: Upload SBOM to Dependency-Track
+        run: |
+          curl -X "PUT" "http://localhost:8080/api/v1/bom" \
+               -H "X-Api-Key: odt_6XxazXnn04B4664xhA4Oj8xuMvU4Zpzd" \
+               -H "Content-Type: multipart/form-data" \
+               -F "project=9f1419ec-1dff-483c-ba6d-6d0e68cf2616" \
+               -F "bom=@target/bom.xml"
