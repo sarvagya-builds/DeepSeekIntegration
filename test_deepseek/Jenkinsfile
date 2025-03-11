@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DEP_TRACK_API_URL = 'https://dtrack.homeit-system.de/api'
+        DEP_TRACK_API_URL = 'http://localhost:8080/api'
         DEP_TRACK_API_KEY = 'odt_LiwdxLe1XPY8608S0S6huqCQkDDlnz23'
         SBOM_FILE_PATH = 'target/bom.xml'
     }
