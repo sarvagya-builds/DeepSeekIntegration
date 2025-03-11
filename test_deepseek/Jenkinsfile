@@ -1,9 +1,7 @@
 #!/usr/bin/env groovy
 
 pipeline {
-    agent {
-        label 'offline'
-    }
+    agent any
 
     environment {
         DEP_TRACK_API_URL = 'http://localhost:8080/api'
