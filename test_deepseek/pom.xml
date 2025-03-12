@@ -68,6 +68,11 @@
             <version>2.6.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hansken.plugin.extraction</groupId>
+            <artifactId>grpc</artifactId>
+            <version>0.6.1</version>
+        </dependency>
 
 
 
