@@ -3,6 +3,10 @@
 pipeline {
   agent any
 
+tools {
+        maven 'Maven3'
+    }
+
   environment {
     DEP_TRACK_API_URL = 'http://localhost:8081/api'
     DEP_TRACK_API_KEY = 'odt_IrMmeW3Hy3zDbxG1SxVD5S8MwqOUYNEk'
@@ -10,24 +14,26 @@ pipeline {
   }
 
   stages {
-    stage("Build") {
-      steps {
-        withMaven {
-          // Build the project
-          sh "mvn clean install -DskipUnitTests=true -DskipTests=true -Dinvoker.skip=true -DskipITs=true -B"
-        }
-      }
-      post {
-        success {
-          // Display success message when Build stage is completed successfully
-          echo "Build stage successfully completed!"
-        }
-        failure {
-          // Display failure message if Build stage fails
-          echo "Build stage failed!"
-        }
-      }
-    }
+  stage('Checkout') {
+              steps {
+                  checkout scm
+              }
+          }
+
+    stage('Build') {
+                steps {
+                    script {
+                        try {
+                            withMaven(maven: 'Maven3') {
+                                sh 'mvn clean install'
+                            }
+                        } catch (Exception e) {
+                            currentBuild.result = 'FAILURE'
+                            throw e
+                        }
+                    }
+                }
+            }
 
     stage('Generate SBOM') {
       steps {
