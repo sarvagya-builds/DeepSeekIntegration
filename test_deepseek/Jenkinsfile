@@ -57,17 +57,14 @@ pipeline {
         script {
           if (fileExists(SBOM_FILE_PATH)) {
             echo 'Uploading SBOM to Dependency-Track...'
-            sh ""
-            "
-            curl - X "POST"
-            "${DEP_TRACK_API_URL}/v1/bom"\ -
-            H 'Content-Type: multipart/form-data'\ -
-              H 'X-API-Key:  ${DEP_TRACK_API_KEY}'\ -
-              F "autoCreate=false"\ -
-              F "project=26fe3e22-c99d-454e-974d-80aee66c3149"\ -
-              F "bom=@${SBOM_FILE_PATH}"
-            ""
-            "
+            sh """
+            curl -X "POST" "${DEP_TRACK_API_URL}/v1/bom" \\
+              -H 'Content-Type: multipart/form-data' \\
+              -H 'X-API-Key: ${DEP_TRACK_API_KEY}' \\
+              -F "autoCreate=false" \\
+              -F "project=26fe3e22-c99d-454e-974d-80aee66c3149" \\
+              -F "bom=@${SBOM_FILE_PATH}"
+            """
           } else {
             echo "SBOM file not found at ${SBOM_FILE_PATH}!"
           }
@@ -88,34 +85,30 @@ pipeline {
         script {
           echo 'Checking vulnerabilities in Dependency-Track...'
 
-
           // Install jq if not present
           sh "command -v jq >/dev/null 2>&1 || (echo 'Installing jq...' && sudo apt update && sudo apt install -y jq)"
           def projectUuid = '26fe3e22-c99d-454e-974d-80aee66c3149'
           def response = sh(
-            script: ""
-            "
-            curl - s - X "GET"
-            "${DEP_TRACK_API_URL}/v1/finding/project/${projectUuid}"\\ -
-            H 'X-API-Key: ${DEP_TRACK_API_KEY}' | \\
-            jq '[.[] | select(.analysis.isSuppressed == false) | .vulnerability.severity] |
-            group_by(.) |
-            map({
-              (.[0]): length
-            }) |
-            add '
-            ""
-            ",
+            script: """
+            curl -s -X "GET" "${DEP_TRACK_API_URL}/v1/finding/project/${projectUuid}" \\
+              -H 'X-API-Key: ${DEP_TRACK_API_KEY}' | \\
+              jq '[.[] | select(.analysis.isSuppressed == false) | .vulnerability.severity] |
+              group_by(.) |
+              map({
+                (.[0]): length
+              }) |
+              add'
+            """,
             returnStdout: true
           ).trim()
           echo "Vulnerability Report: ${response}"
 
           def vulnData = readJSON text: response
-          def criticalCount = vulnData.CRITICAL ? : 0
-          def highCount = vulnData.HIGH ? : 0
-          def mediumCount = vulnData.MEDIUM ? : 0
-          def lowCount = vulnData.LOW ? : 0
-          def unassignedCount = vulnData.UNASSIGNED ? : 0
+          def criticalCount = vulnData.CRITICAL ?: 0
+          def highCount = vulnData.HIGH ?: 0
+          def mediumCount = vulnData.MEDIUM ?: 0
+          def lowCount = vulnData.LOW ?: 0
+          def unassignedCount = vulnData.UNASSIGNED ?: 0
           echo "Critical: ${criticalCount}, High: ${highCount}, Medium: ${mediumCount}, Low: ${lowCount}, Unassigned: ${unassignedCount}"
           def vulnerabilitiesExist = (criticalCount > 0 || highCount > 0)
           if (vulnerabilitiesExist) {
