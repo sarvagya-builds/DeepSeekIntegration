@@ -20,7 +20,7 @@ pipeline {
         script {
           try {
             withMaven(maven: 'Maven3') {
-            bat 'cd test_deepseek && mvn clean install -DskipTests -Dmaven.test.skip=true'
+              bat 'cd test_deepseek && mvn clean install -DskipTests -Dmaven.test.skip=true'
             }
           } catch (Exception e) {
             currentBuild.result = 'FAILURE'
@@ -56,12 +56,12 @@ pipeline {
           if (fileExists(SBOM_FILE_PATH)) {
             echo 'Uploading SBOM to Dependency-Track...'
             bat """
-            curl -X "POST" "${DEP_TRACK_API_URL}/v1/bom" ^
-              -H "Content-Type: multipart/form-data" ^
-              -H "X-API-Key: ${DEP_TRACK_API_KEY}" ^
-              -F "autoCreate=false" ^
-              -F "project=421a9c86-4dcb-46c0-9731-0bc6cc7442f9" ^
-              -F "bom=@${SBOM_FILE_PATH}"
+              curl -X "POST" "${DEP_TRACK_API_URL}/v1/bom" ^
+                -H "Content-Type: multipart/form-data" ^
+                -H "X-API-Key: ${DEP_TRACK_API_KEY}" ^
+                -F "autoCreate=false" ^
+                -F "project=${PROJECT_UUID}" ^
+                -F "bom=@${SBOM_FILE_PATH}"
             """
           } else {
             echo "SBOM file not found at ${SBOM_FILE_PATH}!"
@@ -78,42 +78,38 @@ pipeline {
       }
     }
 
+    stage('Fetch Vulnerability Counts') {
+      steps {
+        script {
+          // Wait for Dependency-Track to analyze the SBOM (30 sec)
+          sleep(time: 30, unit: 'SECONDS')
 
-   stage('Fetch Vulnerability Counts') {
-               steps {
-                   script {
-                       // Wait for Dependency-Track to analyze the SBOM (30 sec)
-                       sleep(time: 30, unit: 'SECONDS')
+          // Fetch findings using Windows-compatible 'curl'
+          bat """
+            curl -X GET "%DEP_TRACK_API_URL%/v1/finding/project/%PROJECT_UUID%/summary" ^
+              -H "X-API-Key: %DEP_TRACK_API_KEY%" ^
+              -H "Accept: application/json" ^
+              -o summary.json
+          """
 
-                       // Fetch findings using Windows-compatible 'curl' (PowerShell)
-                       bat """
-                           curl -X GET "%DEP_TRACK_API_URL%/v1/finding/project/%PROJECT_UUID%/summary" ^
-                             -H "X-API-Key: %DEP_TRACK_API_KEY%" ^
-                             -H "Accept: application/json" ^
-                             -o summary.json
-                       """
-
-                       // Parse and display results
-                       if (fileExists('summary.json')) {
-                           def summary = readJSON file: 'summary.json'
-                           echo """
-                           ===== Dependency-Track Results =====
-                           CRITICAL : ${summary.critical ?: 0}
-                           HIGH     : ${summary.high ?: 0}
-                           MEDIUM   : ${summary.medium ?: 0}
-                           LOW      : ${summary.low ?: 0}
-                           UNASSIGNED: ${summary.unassigned ?: 0}
-                           ===================================
-                           """
-                       } else {
-                           error "Failed to fetch results (summary.json not found)"
-                       }
-                   }
-               }
-           }
-       }
-   }
-
+          // Parse and display results
+          if (fileExists('summary.json')) {
+            def summary = readJSON file: 'summary.json'
+            echo """
+            ===== Dependency-Track Results =====
+            CRITICAL : ${summary.critical ?: 0}
+            HIGH     : ${summary.high ?: 0}
+            MEDIUM   : ${summary.medium ?: 0}
+            LOW      : ${summary.low ?: 0}
+            UNASSIGNED: ${summary.unassigned ?: 0}
+            ===================================
+            """
+          } else {
+            error "Failed to fetch results (summary.json not found)"
+          }
+        }
+      }
+    }
 
 
   }
