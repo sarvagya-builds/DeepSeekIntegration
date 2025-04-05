@@ -8,108 +8,110 @@ pipeline {
   environment {
     DEP_TRACK_API_URL = 'http://localhost:8082/api'
     DEP_TRACK_API_KEY = 'odt_dWinsHFt2G95wGSjLHG5igPmGFpHqtg3'
-    SBOM_FILE_PATH = 'test_deepseek/target/bom.xml'
+    SBOM_FILE_PATH = 'target/bom.xml'
     PROJECT_UUID = '421a9c86-4dcb-46c0-9731-0bc6cc7442f9'
   }
 
   stages {
-  
 
-    stage('Build') {
-      steps {
-        script {
-          try {
-            withMaven(maven: 'Maven3') {
-              bat 'cd test_deepseek && mvn clean install -DskipTests -Dmaven.test.skip=true'
+
+            stage("Build") {
+              steps {
+                withMaven {
+                    sh "mvn clean install -DskipUnitTests=true -DskipTests=true -Dinvoker.skip=true -DskipITs=true -B"
+
+                }
+              }
             }
-          } catch (Exception e) {
-            currentBuild.result = 'FAILURE'
-            throw e
-          }
-        }
-      }
-    }
 
-    stage('Generate SBOM') {
-      steps {
-        withMaven {
-          bat 'cd test_deepseek && mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom'
-        }
-      }
-      post {
-        success {
-          echo "SBOM file successfully generated!"
-        }
-        failure {
-          echo "SBOM file generation failed!"
-        }
-        always {
-          archiveArtifacts allowEmptyArchive: true, artifacts: 'test_deepseek/target/bom.json'
-          archiveArtifacts allowEmptyArchive: true, artifacts: 'test_deepseek/target/bom.xml'
-        }
-      }
-    }
+            stage('Generate SBOM') {
+                steps {
+                    withMaven {
+                        sh 'mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom'
+                    }
+                }
+                post {
+                    success {
+                        echo 'SBOM file successfully generated!'
+                    }
+                    failure {
+                        echo 'SBOM file generation failed!'
+                    }
+                    always {
+                        archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/bom.json'
+                        archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/bom.xml'
+                    }
+                }
+            }
 
-    stage('Upload SBOM to Dependency-Track') {
-      steps {
-        script {
-          if (fileExists(SBOM_FILE_PATH)) {
-            echo 'Uploading SBOM to Dependency-Track...'
-            bat """
-              curl -X "POST" "${DEP_TRACK_API_URL}/v1/bom" ^
-                -H "Content-Type: multipart/form-data" ^
-                -H "X-API-Key: ${DEP_TRACK_API_KEY}" ^
-                -F "autoCreate=false" ^
-                -F "project=${PROJECT_UUID}" ^
-                -F "bom=@${SBOM_FILE_PATH}"
-            """
-          } else {
-            echo "SBOM file not found at ${SBOM_FILE_PATH}!"
-          }
-        }
-      }
-      post {
-        success {
-          echo 'SBOM file successfully uploaded to Dependency-Track!'
-        }
-        failure {
-          echo 'Failed to upload SBOM file to Dependency-Track!'
-        }
-      }
-    }
 
-    stage('Fetch Vulnerability Counts') {
-      steps {
-        script {
-          // Wait for Dependency-Track to analyze the SBOM (30 sec)
-          sleep(time: 30, unit: 'SECONDS')
+            stage('Upload SBOM to Dependency-Track') {
 
-          // Fetch findings using Windows-compatible 'curl'
-          bat """
-            curl -X GET "%DEP_TRACK_API_URL%/v1/finding/project/%PROJECT_UUID%/summary" ^
-              -H "X-API-Key: %DEP_TRACK_API_KEY%" ^
-              -H "Accept: application/json" ^
-              -o summary.json
-          """
+                        steps {
+                            script {
+                                if (fileExists(SBOM_FILE_PATH)) {
+                                    echo 'Uploading SBOM to Dependency-Track...'
+                                    sh """
+                                        curl -X "POST" "${DEP_TRACK_API_URL}/v1/bom" \
+                                             -H 'Content-Type: multipart/form-data' \
+                                             -H 'X-API-Key:  ${DEP_TRACK_API_KEY}' \
+                                             -F "autoCreate=false" \
+                                             -F "project=${PROJECT_UUID}" \
+                                             -F "bom=@${SBOM_FILE_PATH}"
+                                     """
+                               } else {
+                                    echo "SBOM file not found at ${SBOM_FILE_PATH}!"
+                                }
+                            }
+                        }
+                        post {
+                            success {
+                                echo 'SBOM file successfully uploaded to Dependency-Track!'
+                            }
+                            failure {
+                                echo 'Failed to upload SBOM file to Dependency-Track!'
+                            }
+                        }
+                    }
 
-          // Parse and display results
-          if (fileExists('summary.json')) {
-            def summary = readJSON file: 'summary.json'
-            echo """
-            ===== Dependency-Track Results =====
-            CRITICAL : ${summary.critical ?: 0}
-            HIGH     : ${summary.high ?: 0}
-            MEDIUM   : ${summary.medium ?: 0}
-            LOW      : ${summary.low ?: 0}
-            UNASSIGNED: ${summary.unassigned ?: 0}
-            ===================================
-            """
-          } else {
-            error "Failed to fetch results (summary.json not found)"
-          }
-        }
-      }
-    }
+            stage('Check Dependency Vulnerabilities') {
+
+                       steps {
+                           script {
+                               echo 'Checking vulnerabilities in Dependency-Track...'
+
+
+                               // Install jq if not present
+                               sh "command -v jq >/dev/null 2>&1 || (echo 'Installing jq...' && sudo apt update && sudo apt install -y jq)"
+                               def response = sh(
+                                   script: """
+                                       curl -s -X "GET" "${DEP_TRACK_API_URL}/v1/finding/project/${PROJECT_UUID}" \\
+                                            -H 'X-API-Key: ${DEP_TRACK_API_KEY}' | \\
+                                       jq '[.[] | select(.analysis.isSuppressed == false) | .vulnerability.severity] |
+                                           group_by(.) |
+                                           map({(.[0]): length}) |
+                                           add'
+                                   """,
+                                   returnStdout: true
+                               ).trim()
+                               echo "Vulnerability Report: ${response}"
+
+                               def vulnData = readJSON text: response
+                               def criticalCount = vulnData.CRITICAL ?: 0
+                               def highCount = vulnData.HIGH ?: 0
+                               def mediumCount = vulnData.MEDIUM ?: 0
+                               def lowCount = vulnData.LOW ?: 0
+                               def unassignedCount = vulnData.UNASSIGNED ?: 0
+                               echo "Critical: ${criticalCount}, High: ${highCount}, Medium: ${mediumCount}, Low: ${lowCount}, Unassigned: ${unassignedCount}"
+                               def vulnerabilitiesExist = (criticalCount > 0 || highCount > 0 )
+                               if (vulnerabilitiesExist) {
+                                   error "Pipeline aborted due to detected vulnerabilities: CRITICAL=${criticalCount}, HIGH=${highCount}"
+                               } else {
+                                   echo 'No critical vulnerabilities found.'
+                               }
+                           }
+                       }
+                   }
 
 
   }
