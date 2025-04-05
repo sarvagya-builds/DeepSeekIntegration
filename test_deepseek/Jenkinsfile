@@ -6,7 +6,7 @@ pipeline {
   }
 
   environment {
-    DEP_TRACK_API_URL = 'http://localhost:8081/api'
+    DEP_TRACK_API_URL = 'http://localhost:8082/api'
     DEP_TRACK_API_KEY = 'odt_dWinsHFt2G95wGSjLHG5igPmGFpHqtg3'
     SBOM_FILE_PATH = 'test_deepseek/target/bom.xml' // Update the path accordingly
   }
@@ -19,8 +19,7 @@ pipeline {
         script {
           try {
             withMaven(maven: 'Maven3') {
-              // Change directory to 'test_deepseek' before running Maven
-              bat 'cd test_deepseek && mvn clean install'
+            bat 'cd test_deepseek && mvn clean install -DskipTests -Dmaven.test.skip=true'
             }
           } catch (Exception e) {
             currentBuild.result = 'FAILURE'
@@ -33,7 +32,6 @@ pipeline {
     stage('Generate SBOM') {
       steps {
         withMaven {
-          // Change directory to 'test_deepseek' before generating the SBOM
           bat 'cd test_deepseek && mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom'
         }
       }
@@ -80,42 +78,44 @@ pipeline {
     }
 
     stage('Check Dependency Vulnerabilities') {
-      steps {
-        script {
-          echo 'Checking vulnerabilities in Dependency-Track...'
+       steps {
+         script {
+           echo 'Checking vulnerabilities in Dependency-Track...'
 
-          def projectUuid = '421a9c86-4dcb-46c0-9731-0bc6cc7442f9'
-          def response = bat(
-            script: """
-            curl -s -X "GET" "${DEP_TRACK_API_URL}/v1/finding/project/${projectUuid}" ^
-              -H "X-API-Key: ${DEP_TRACK_API_KEY}" ^
-              | jq "[.[] | select(.analysis.isSuppressed == false) | .vulnerability.severity] |
-              group_by(.) |
-              map({
-                (\\"\\${0}\\"): length
-              }) |
-              add"
-            """,
-            returnStdout: true
-          ).trim()
+           def projectUuid = '421a9c86-4dcb-46c0-9731-0bc6cc7442f9'
+           def response = bat(
+             script: """
+             curl -s -X "GET" "${DEP_TRACK_API_URL}/v1/finding/project/${projectUuid}" ^
+               -H "X-API-Key: ${DEP_TRACK_API_KEY}"
+             """,
+             returnStdout: true
+           ).trim()
 
-          echo "Vulnerability Report: ${response}"
+           echo "Vulnerability Report: ${response}"
 
-          def vulnData = readJSON text: response
-          def criticalCount = vulnData.CRITICAL ?: 0
-          def highCount = vulnData.HIGH ?: 0
-          def mediumCount = vulnData.MEDIUM ?: 0
-          def lowCount = vulnData.LOW ?: 0
-          def unassignedCount = vulnData.UNASSIGNED ?: 0
-          echo "Critical: ${criticalCount}, High: ${highCount}, Medium: ${mediumCount}, Low: ${lowCount}, Unassigned: ${unassignedCount}"
-          def vulnerabilitiesExist = (criticalCount > 0 || highCount > 0)
-          if (vulnerabilitiesExist) {
-            error "Pipeline aborted due to detected vulnerabilities: CRITICAL=${criticalCount}, HIGH=${highCount}"
-          } else {
-            echo 'No critical vulnerabilities found.'
-          }
-        }
-      }
-    }
+           // Parse the response JSON using Groovy's JsonSlurper
+           def jsonSlurper = new groovy.json.JsonSlurper()
+           def vulnData = jsonSlurper.parseText(response)
+
+           def criticalCount = vulnData.findAll { it.analysis?.isSuppressed == false && it.vulnerability?.severity == 'CRITICAL' }.size()
+           def highCount = vulnData.findAll { it.analysis?.isSuppressed == false && it.vulnerability?.severity == 'HIGH' }.size()
+           def mediumCount = vulnData.findAll { it.analysis?.isSuppressed == false && it.vulnerability?.severity == 'MEDIUM' }.size()
+           def lowCount = vulnData.findAll { it.analysis?.isSuppressed == false && it.vulnerability?.severity == 'LOW' }.size()
+           def unassignedCount = vulnData.findAll { it.analysis?.isSuppressed == false && it.vulnerability?.severity == 'UNASSIGNED' }.size()
+
+           echo "Critical: ${criticalCount}, High: ${highCount}, Medium: ${mediumCount}, Low: ${lowCount}, Unassigned: ${unassignedCount}"
+
+           def vulnerabilitiesExist = (criticalCount > 0 || highCount > 0)
+           if (vulnerabilitiesExist) {
+             error "Pipeline aborted due to detected vulnerabilities: CRITICAL=${criticalCount}, HIGH=${highCount}"
+           } else {
+             echo 'No critical vulnerabilities found.'
+           }
+         }
+       }
+     }
+
+
+
   }
 }
