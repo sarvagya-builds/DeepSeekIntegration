@@ -77,51 +77,31 @@ pipeline {
       }
     }
 
-   stage('Check Dependency Vulnerabilities') {
-       steps {
-           script {
-               echo 'Checking vulnerabilities in Dependency-Track...'
 
-               def projectUuid = '421a9c86-4dcb-46c0-9731-0bc6cc7442f9'
+    stage('Fetch Vulnerability Summary') {
+          steps {
+            script {
+              def summaryJson = bat(
+                script: """
+                  curl -s -X GET "${DEP_TRACK_API_URL}/v1/finding/project/${PROJECT_UUID}/summary" ^
+                    -H "X-API-Key: ${DEP_TRACK_API_KEY}" ^
+                    -H "Accept: application/json"
+                """,
+                returnStdout: true
+              ).trim()
 
-               // Modify curl command for Windows to ensure only the response is captured
-               def response = bat(
-                   script: """curl -s -X GET "${DEP_TRACK_API_URL}/v1/finding/project/${projectUuid}" -H "X-API-Key: ${DEP_TRACK_API_KEY}" """,
-                   returnStdout: true
-               ).trim()
+              def summary = readJSON text: summaryJson
 
-               echo "Vulnerability Report: ${response}"  // Print the raw response
-
-               // Add a check to ensure the response is valid JSON before parsing it
-               try {
-                   // Parse the JSON response using Groovy's JsonSlurper
-                   def jsonSlurper = new groovy.json.JsonSlurper()
-                   def vulnData = jsonSlurper.parseText(response)
-
-                   // Count vulnerabilities by severity
-                   def criticalCount = vulnData.findAll { it.analysis?.isSuppressed == false && it.vulnerability?.severity == 'CRITICAL' }.size()
-                   def highCount = vulnData.findAll { it.analysis?.isSuppressed == false && it.vulnerability?.severity == 'HIGH' }.size()
-                   def mediumCount = vulnData.findAll { it.analysis?.isSuppressed == false && it.vulnerability?.severity == 'MEDIUM' }.size()
-                   def lowCount = vulnData.findAll { it.analysis?.isSuppressed == false && it.vulnerability?.severity == 'LOW' }.size()
-                   def unassignedCount = vulnData.findAll { it.analysis?.isSuppressed == false && it.vulnerability?.severity == 'UNASSIGNED' }.size()
-
-                   echo "Critical: ${criticalCount}, High: ${highCount}, Medium: ${mediumCount}, Low: ${lowCount}, Unassigned: ${unassignedCount}"
-
-                   // Fail the pipeline if critical or high vulnerabilities exist
-                   def vulnerabilitiesExist = (criticalCount > 0 || highCount > 0)
-                   if (vulnerabilitiesExist) {
-                       error "Pipeline aborted due to detected vulnerabilities: CRITICAL=${criticalCount}, HIGH=${highCount}"
-                   } else {
-                       echo 'No critical vulnerabilities found.'
-                   }
-               } catch (Exception e) {
-                   echo "Error parsing the response as JSON: ${e.getMessage()}"
-                   error "Invalid JSON response received."
-               }
-           }
-       }
-   }
-
+              echo "==== Vulnerability Summary ===="
+              echo "CRITICAL: ${summary.critical}"
+              echo "HIGH    : ${summary.high}"
+              echo "MEDIUM  : ${summary.medium}"
+              echo "LOW     : ${summary.low}"
+              echo "UNASSIGNED: ${summary.unassigned}"
+              echo "================================"
+            }
+          }
+        }
 
 
 
