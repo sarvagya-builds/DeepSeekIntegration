@@ -82,16 +82,15 @@ pipeline {
     stage('Fetch Vulnerability Summary') {
           steps {
             script {
-              def summaryJson = bat(
-                script: """
-                  curl -s -X GET "${DEP_TRACK_API_URL}/v1/finding/project/${PROJECT_UUID}/summary" ^
-                    -H "X-API-Key: ${DEP_TRACK_API_KEY}" ^
-                    -H "Accept: application/json"
-                """,
-                returnStdout: true
-              ).trim()
+              bat """
+                curl -s -X GET "${DEP_TRACK_API_URL}/v1/finding/project/${PROJECT_UUID}/summary" ^
+                  -H "X-API-Key: ${DEP_TRACK_API_KEY}" ^
+                  -H "Accept: application/json" ^
+                  -o summary.json
+              """
 
-              def summary = readJSON text: summaryJson
+              def summary = readJSON file: 'summary.json'
+
 
               echo "==== Vulnerability Summary ===="
               echo "CRITICAL: ${summary.critical}"
