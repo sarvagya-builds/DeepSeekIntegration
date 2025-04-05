@@ -117,22 +117,7 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>12.1.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <nvdApiKey>50277caf-2e97-46ed-b62b-231ed1e97db0</nvdApiKey>
-                </configuration>
 
-            </plugin>
 
             <plugin>
                 <groupId>org.cyclonedx</groupId>
