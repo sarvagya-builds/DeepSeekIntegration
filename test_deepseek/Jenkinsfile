@@ -79,45 +79,40 @@ pipeline {
     }
 
 
-   stage('Fetch Vulnerability Summary') {
-     steps {
-       script {
-         // Fetch summary from Dependency-Track
-         bat """
-           curl -s -w "%%{http_code}" -o summary.json ^
-             -X GET "${DEP_TRACK_API_URL}/v1/finding/project/${PROJECT_UUID}/summary" ^
-             -H "X-API-Key: ${DEP_TRACK_API_KEY}" ^
-             -H "Accept: application/json" > curl_status.txt
-         """
+   stage('Fetch Vulnerability Counts') {
+               steps {
+                   script {
+                       // Wait for Dependency-Track to analyze the SBOM (30 sec)
+                       sleep(time: 30, unit: 'SECONDS')
 
-         // Read HTTP status code
-         def httpStatus = readFile('curl_status.txt').trim()
-         echo "HTTP Status: ${httpStatus}"
+                       // Fetch findings using Windows-compatible 'curl' (PowerShell)
+                       bat """
+                           curl -X GET "%DEP_TRACK_API_URL%/v1/finding/project/%PROJECT_UUID%/summary" ^
+                             -H "X-API-Key: %DEP_TRACK_API_KEY%" ^
+                             -H "Accept: application/json" ^
+                             -o summary.json
+                       """
 
-         if (httpStatus != '200') {
-           error "Failed to fetch summary. HTTP status: ${httpStatus}"
-         }
-
-         // Read JSON safely
-         def jsonText = readFile('summary.json').trim()
-
-         if (!jsonText || jsonText.startsWith('<')) {
-           error "Invalid response received. Not a valid JSON: \n${jsonText.take(200)}"
-         }
-
-         def summary = readJSON text: jsonText
-
-         echo "==== Vulnerability Summary ===="
-         echo "CRITICAL: ${summary.critical}"
-         echo "HIGH    : ${summary.high}"
-         echo "MEDIUM  : ${summary.medium}"
-         echo "LOW     : ${summary.low}"
-         echo "UNASSIGNED: ${summary.unassigned}"
-         echo "================================"
+                       // Parse and display results
+                       if (fileExists('summary.json')) {
+                           def summary = readJSON file: 'summary.json'
+                           echo """
+                           ===== Dependency-Track Results =====
+                           CRITICAL : ${summary.critical ?: 0}
+                           HIGH     : ${summary.high ?: 0}
+                           MEDIUM   : ${summary.medium ?: 0}
+                           LOW      : ${summary.low ?: 0}
+                           UNASSIGNED: ${summary.unassigned ?: 0}
+                           ===================================
+                           """
+                       } else {
+                           error "Failed to fetch results (summary.json not found)"
+                       }
+                   }
+               }
+           }
        }
-     }
    }
-
 
 
 
