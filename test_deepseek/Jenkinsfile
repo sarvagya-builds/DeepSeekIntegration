@@ -79,45 +79,44 @@ pipeline {
     }
 
 
-    stage('Fetch Vulnerability Summary') {
-      steps {
-        script {
-          // Fetch summary from Dependency-Track
-          bat """
-            curl -s -w "%{http_code}" -o summary.json ^
-              -X GET "${DEP_TRACK_API_URL}/v1/finding/project/${PROJECT_UUID}/summary" ^
-              -H "X-API-Key: ${DEP_TRACK_API_KEY}" ^
-              -H "Accept: application/json" > curl_status.txt
-          """
+   stage('Fetch Vulnerability Summary') {
+     steps {
+       script {
+         // Fetch summary from Dependency-Track
+         bat """
+           curl -s -w "%%{http_code}" -o summary.json ^
+             -X GET "${DEP_TRACK_API_URL}/v1/finding/project/${PROJECT_UUID}/summary" ^
+             -H "X-API-Key: ${DEP_TRACK_API_KEY}" ^
+             -H "Accept: application/json" > curl_status.txt
+         """
 
-          // Read HTTP status code
-          def httpStatus = readFile('curl_status.txt').trim()
-          echo "HTTP Status: ${httpStatus}"
+         // Read HTTP status code
+         def httpStatus = readFile('curl_status.txt').trim()
+         echo "HTTP Status: ${httpStatus}"
 
-          if (httpStatus != '200') {
-            error "Failed to fetch summary. HTTP status: ${httpStatus}"
-          }
+         if (httpStatus != '200') {
+           error "Failed to fetch summary. HTTP status: ${httpStatus}"
+         }
 
-          // Read JSON safely
-          def jsonText = readFile('summary.json').trim()
+         // Read JSON safely
+         def jsonText = readFile('summary.json').trim()
 
-          if (!jsonText || jsonText.startsWith('<')) {
-            error "Invalid response received. Not a valid JSON: \n${jsonText.take(200)}"
-          }
+         if (!jsonText || jsonText.startsWith('<')) {
+           error "Invalid response received. Not a valid JSON: \n${jsonText.take(200)}"
+         }
 
-          def summary = readJSON text: jsonText
+         def summary = readJSON text: jsonText
 
-          echo "==== Vulnerability Summary ===="
-          echo "CRITICAL: ${summary.critical}"
-          echo "HIGH    : ${summary.high}"
-          echo "MEDIUM  : ${summary.medium}"
-          echo "LOW     : ${summary.low}"
-          echo "UNASSIGNED: ${summary.unassigned}"
-          echo "================================"
-        }
-      }
-    }
-
+         echo "==== Vulnerability Summary ===="
+         echo "CRITICAL: ${summary.critical}"
+         echo "HIGH    : ${summary.high}"
+         echo "MEDIUM  : ${summary.medium}"
+         echo "LOW     : ${summary.low}"
+         echo "UNASSIGNED: ${summary.unassigned}"
+         echo "================================"
+       }
+     }
+   }
 
 
 
