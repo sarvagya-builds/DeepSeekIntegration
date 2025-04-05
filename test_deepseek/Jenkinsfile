@@ -6,73 +6,81 @@ pipeline {
   }
 
   environment {
-    DEP_TRACK_API_URL = 'http://localhost:8082/api'
-    DEP_TRACK_API_KEY = 'odt_dWinsHFt2G95wGSjLHG5igPmGFpHqtg3'
-    SBOM_FILE_PATH = 'target/bom.xml'
-    PROJECT_UUID = '421a9c86-4dcb-46c0-9731-0bc6cc7442f9'
+        // Base directory containing pom.xml
+         PROJECT_DIR = 'test_deepseek'
+        // Paths relative to PROJECT_DIR
+        SBOM_FILE_PATH = "${PROJECT_DIR}/target/bom.xml"
+        DEP_TRACK_API_URL = 'http://localhost:8082/api'
+        DEP_TRACK_API_KEY = 'odt_dWinsHFt2G95wGSjLHG5igPmGFpHqtg3'
+        PROJECT_UUID = '421a9c86-4dcb-46c0-9731-0bc6cc7442f9'
   }
 
   stages {
 
-
-            stage("Build") {
-              steps {
-                withMaven {
-                    sh "mvn clean install -DskipUnitTests=true -DskipTests=true -Dinvoker.skip=true -DskipITs=true -B"
-
+            stage('Build') {
+                  steps {
+                    dir(env.PROJECT_DIR) {
+                      withMaven {
+                        sh """
+                          mvn clean install -DskipUnitTests=true -DskipTests=true -Dinvoker.skip=true -DskipITs=true -B
+                        """
+                      }
+                    }
+                  }
                 }
-              }
-            }
 
             stage('Generate SBOM') {
-                steps {
-                    withMaven {
+                  steps {
+                    dir(env.PROJECT_DIR) {
+                      withMaven {
                         sh 'mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom'
+                      }
                     }
-                }
-                post {
+                  }
+                  post {
                     success {
-                        echo 'SBOM file successfully generated!'
+                            echo 'SBOM file successfully generated!'
                     }
                     failure {
-                        echo 'SBOM file generation failed!'
+                             echo 'SBOM file generation failed!'
                     }
                     always {
-                        archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/bom.json'
-                        archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/bom.xml'
+                      archiveArtifacts artifacts: "${SBOM_FILE_PATH},${PROJECT_DIR}/target/bom.json",
+                                      allowEmptyArchive: true
                     }
+                  }
                 }
-            }
 
 
-            stage('Upload SBOM to Dependency-Track') {
-
-                        steps {
-                            script {
-                                if (fileExists(SBOM_FILE_PATH)) {
-                                    echo 'Uploading SBOM to Dependency-Track...'
-                                    sh """
-                                        curl -X "POST" "${DEP_TRACK_API_URL}/v1/bom" \
-                                             -H 'Content-Type: multipart/form-data' \
-                                             -H 'X-API-Key:  ${DEP_TRACK_API_KEY}' \
-                                             -F "autoCreate=false" \
-                                             -F "project=${PROJECT_UUID}" \
-                                             -F "bom=@${SBOM_FILE_PATH}"
-                                     """
-                               } else {
-                                    echo "SBOM file not found at ${SBOM_FILE_PATH}!"
-                                }
-                            }
+            stage('Upload SBOM file') {
+                  steps {
+                    script {
+                      dir(env.PROJECT_DIR) {
+                        if (fileExists('target/bom.xml')) {
+                             echo 'Uploading SBOM to Dependency-Track...'
+                          sh """
+                            curl -f -X "POST" "${DEP_TRACK_API_URL}/v1/bom" \
+                              -H 'Content-Type: multipart/form-data' \
+                              -H 'X-API-Key: ${DEP_TRACK_API_KEY}' \
+                              -F "autoCreate=true" \
+                              -F "project=${PROJECT_UUID}" \
+                              -F "bom=@target/bom.xml"
+                          """
+                        } else {
+                          error "SBOM file not found at ${SBOM_FILE_PATH}"
                         }
-                        post {
-                            success {
-                                echo 'SBOM file successfully uploaded to Dependency-Track!'
-                            }
-                            failure {
-                                echo 'Failed to upload SBOM file to Dependency-Track!'
-                            }
-                        }
+                      }
                     }
+                  }
+                  post {
+                    success {
+                        echo 'SBOM file successfully uploaded to Dependency-Track!'
+                    }
+                    failure {
+                        echo 'Failed to upload SBOM file to Dependency-Track!'
+                    }
+                  }
+                }
 
             stage('Check Dependency Vulnerabilities') {
 
