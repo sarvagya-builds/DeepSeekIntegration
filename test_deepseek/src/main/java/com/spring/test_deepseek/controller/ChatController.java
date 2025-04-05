@@ -28,6 +28,7 @@ public class ChatController {
         this.chatService = chatService;
     }
 
+
     @GetMapping("/ai/generate")
     public Map<String, String> generate(@RequestParam(value = "message", defaultValue = "This is mock response") String message) {
         return Map.of("result", this.chatModel.call(message));
